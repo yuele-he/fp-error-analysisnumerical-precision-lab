@@ -1,8 +1,8 @@
 import numpy as np
-from matplotlib import pyplot as plt
+import matplotlib.pyplot as plt
 from scipy.stats import linregress
-
 from qr_factorization import householder_qr, qr_wy, block_qr
+
 
 # Mapping method names to functions
 qr_methods = {
@@ -15,16 +15,17 @@ def compute_qr_errors(A, b, qr_func):
     Q, R = qr_func(A)
     recon = np.linalg.norm(A - Q @ R, 'fro') / np.linalg.norm(A, 'fro')
     orth = np.linalg.norm(Q.T @ Q - np.eye(Q.shape[1])) / np.linalg.norm(Q)
-    x = np.linalg.solve(R, Q.T @ b)
+
+    rhs = Q.T @ b
+    x = np.linalg.lstsq(R, rhs, rcond=None)[0]
     ls = np.linalg.norm(R @ x - Q.T @ b) / np.linalg.norm(b)
     return recon, orth, ls
 
 # Experimental setup
 methods = ['householder', 'wy', 'block']
-precisions = [np.float16, np.float32, np.float64]
-precision_labels = ['float16', 'float32', 'float64']
+precisions = [np.float32, np.float64]
+precision_labels = ['float32', 'float64']
 metrics = ['Reconstruction', 'Orthogonality', 'Least Squares']
-# TODO 4,11
 n_values = [2**i for i in range(4, 6)]  # n = 16 to 1024
 n_trials = 2
 
@@ -42,13 +43,14 @@ for method in methods:
             for _ in range(n_trials):
                 A = np.random.randn(m, n).astype(prec)
                 b = np.random.randn(m).astype(prec)
-                try:
-                    recon, orth, ls = compute_qr_errors(A, b, qr_func)
-                    max_errors['Reconstruction'] = max(max_errors['Reconstruction'], recon)
-                    max_errors['Orthogonality'] = max(max_errors['Orthogonality'], orth)
-                    max_errors['Least Squares'] = max(max_errors['Least Squares'], ls)
-                except:
-                    continue
+                # try:
+                recon, orth, ls = compute_qr_errors(A, b, qr_func)
+                # print(recon, orth, ls)
+                max_errors['Reconstruction'] = max(max_errors['Reconstruction'], recon)
+                max_errors['Orthogonality'] = max(max_errors['Orthogonality'], orth)
+                max_errors['Least Squares'] = max(max_errors['Least Squares'], ls)
+                # except:
+                #     continue
             for metric in metrics:
                 results[method][label][metric].append(max_errors[metric])
         # Fit log-log line
@@ -59,7 +61,7 @@ for method in methods:
             logy = np.log(y + 1e-20)
             k, c, *_ = linregress(logx, logy)
             fit_params[method][label][metric] = (k, c)
-
+print(results)
 # Plot 3x3 grid
 fig, axes = plt.subplots(3, 3, figsize=(16, 12))
 for i, metric in enumerate(metrics):
