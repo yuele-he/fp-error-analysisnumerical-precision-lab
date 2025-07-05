@@ -80,6 +80,7 @@ def plot_figure3(errors_matrix, save_path=None, title_prefix=""):
     hb = ax1.hist2d(step_indices, flat_errors, bins=(128, 128), cmap='coolwarm', cmin=1)
     ax1.set_xlabel("Step")
     ax1.set_ylabel("Relative Error")
+    ax1.set_ylim([-6e-8, 6e-8])
     ax1.set_title(f"{title_prefix} Error Heatmap over Steps")
 
     # Add vertical dotted lines at positions 2^n
@@ -91,9 +92,9 @@ def plot_figure3(errors_matrix, save_path=None, title_prefix=""):
     # --- Right: Histogram + KDE of relative error (horizontal) ---
     sns.histplot(y=flat_errors, bins=80, kde=True, ax=ax2, color='skyblue', orientation="horizontal")
     ax2.set_ylabel("Relative Error")
+    ax2.set_ylim([-6e-8, 6e-8])
     ax2.set_xlabel("Density")
     ax2.set_title(f"{title_prefix} Error Distribution")
-    # ax2.legend()
 
     plt.tight_layout()
     if save_path:
