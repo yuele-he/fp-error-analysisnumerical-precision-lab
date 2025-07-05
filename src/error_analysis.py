@@ -47,6 +47,8 @@ for method in methods:
             errors = {metric: [] for metric in metrics}
             for _ in range(n_trials):
                 A = np.random.uniform(1, 2, size=(m, n)).astype(prec)
+                A = A / np.linalg.norm(A)
+
                 b = np.random.uniform(1, 2, size=(m, 1)).astype(prec)
                 # try:
                 recon, orth, ls = compute_qr_errors(A, b, qr_func)
