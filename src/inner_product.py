@@ -85,7 +85,7 @@ def plot_inner_product_errors(
         ax=None
 ):
     """
-    Plot error scatter and upper bound fit to a given matplotlib Axes.
+    Plot error scatter and upper-bound fit to a given matplotlib Axes.
     If ax is None, create a new plot.
     """
     if ax is None:

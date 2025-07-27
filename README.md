@@ -1,11 +1,13 @@
 # Error Analysis of Floating-Point Algorithms
 
 This repository contains the implementation and experiments from my MSc dissertation:
-**"Error Analysis of Floating-Point Algorithms to Compute Inner Products and the QR Factorization, with an Application to Least Squares Problems"**.
+**"Error Analysis of Floating-Point Algorithms to Compute Inner Products and the QR Factorization, with an Application
+to Least Squares Problems"**.
 
 ## 🔍 Overview
 
 This project focuses on:
+
 - Rounding errors in floating-point systems
 - Accuracy analysis of inner product calculations
 - QR decomposition via Householder reflections (element-wise and block-wise)
@@ -24,6 +26,20 @@ This project focuses on:
 - Probabilistic error bounds
 - Mixed-precision fused multiply-add (FMA)
 - Log-log regression on relative error bounds
+
+## 🛠 Installation
+
+```bash
+git clone https://github.com/yuele-he/fp-error-analysisnumerical-precision-lab.git
+cd fp-error-analysisnumerical-precision-lab
+pip install -r requirements.txt
+```
+## 🚀 Run Examples
+
+# Run QR decomposition experiment
+```bash
+python src/inner_product.py
+```
 
 ## 📊 Results Preview
 
