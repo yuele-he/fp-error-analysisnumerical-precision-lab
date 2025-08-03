@@ -1,4 +1,5 @@
 # src/core/plotter.py
+from typing import Tuple
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,10 +7,12 @@ import seaborn as sns
 
 
 def plot_error_heatmap(
-    errors_matrix: np.ndarray,
-    title: str = "Relative Error Heatmap",
-    save_path: str = None,
-    bins: int = 128,
+        errors_matrix: np.ndarray,
+        title: str = "Relative Error Heatmap",
+        save_path: str = None,
+        bins: int = 128,
+        xlim: Tuple[float, float] = None,
+        ylim: Tuple[float, float] = None,
 ):
     """
     绘制 step-wise 误差热力图。
@@ -21,7 +24,6 @@ def plot_error_heatmap(
         bins (int): bin 数量。
     """
     n_trials, n_steps = errors_matrix.shape
-    print("n_trials, n_steps", n_trials, n_steps)
     flat_errors = errors_matrix.flatten()
     step_indices = np.tile(np.arange(n_steps), n_trials)
 
@@ -31,6 +33,10 @@ def plot_error_heatmap(
     ax.set_xlabel("Step")
     ax.set_ylabel("Relative Error")
     ax.set_title(title)
+    if xlim is not None:
+        ax.set_xlim(xlim)
+    if ylim is not None:
+        ax.set_ylim(ylim)
 
     # Add log2 reference lines
     for n in range(5, int(np.log2(n_steps)) + 1):
@@ -46,10 +52,12 @@ def plot_error_heatmap(
 
 
 def plot_error_distribution(
-    errors_matrix: np.ndarray,
-    title: str = "Relative Error Distribution",
-    save_path: str = None,
-    bins: int = 80,
+        errors_matrix: np.ndarray,
+        title: str = "Relative Error Distribution",
+        save_path: str = None,
+        bins: int = 80,
+        xlim: Tuple[float, float] = None,
+        ylim: Tuple[float, float] = None,
 ):
     """
     绘制误差分布图（带 KDE 的直方图）。
@@ -68,6 +76,10 @@ def plot_error_distribution(
     ax.set_ylabel("Relative Error")
     ax.set_xlabel("Density")
     ax.set_title(title)
+    if xlim is not None:
+        ax.set_xlim(xlim)
+    if ylim is not None:
+        ax.set_ylim(ylim)
 
     plt.tight_layout()
     if save_path:
