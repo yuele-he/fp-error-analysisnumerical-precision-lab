@@ -32,7 +32,7 @@ metrics = ['Reconstruction', 'Orthogonality', 'Least Squares']
 values = np.logspace(np.log10(10), np.log10(512), num=20)
 matrix_size = np.round(values).astype(int)
 # n_values = [int(1.5 ** i) for i in range(8, 15)]  # n = 16 to 1024
-n_trials = 50
+n_trials = 20
 
 # Storage for plotting and fitting
 results = {method: {prec: {metric: [] for metric in metrics} for prec in precision_labels} for method in methods}
